@@ -5,5 +5,5 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def index():
-    books = Book.query.all()
+    books = Book.query.order_by(Book.created_at.desc()).all()
     return render_template("main/index.html", books=books)
