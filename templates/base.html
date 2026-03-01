@@ -2,41 +2,88 @@
 <html>
 <head>
     <title>Book Manager</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        nav {
+            background: #6a0dad;
+            padding: 15px 30px;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        nav strong {
+            font-size: 18px;
+        }
+
+        nav a {
+            color: white;
+            margin-left: 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 80%;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .flash-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
+
 <body>
 
-<nav style="background: purple; padding: 10px; color: white;">
-    <strong>Book Manager</strong>
+<nav>
+    <strong>📚 Book Manager</strong>
 
-    <a href="/" style="color:white; margin-left:20px;">Home</a>
+    <a href="/">Home</a>
 
     {% if current_user.is_authenticated %}
-        <a href="/add-book" style="color:white; margin-left:20px;">Add Book</a>
-
-
-        <a href="{{ url_for('logout') }}" 
-           style="color:white; margin-left:20px;">
-           Logout
-        </a>
+        <a href="/add-book">Add Book</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
     {% else %}
-        <a href="/login" style="color:white; margin-left:20px;">Login</a>
-        <a href="/register" style="color:white; margin-left:20px;">Register</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
     {% endif %}
 </nav>
 
-<div style="padding: 20px;">
+<div class="container">
 
-    <!-- แสดงข้อความ flash -->
+    <!-- Flash Message -->
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
-                <p style="color: green;">{{ message }}</p>
+                <div class="flash-message">
+                    {{ message }}
+                </div>
             {% endfor %}
         {% endif %}
     {% endwith %}
 
     {% block content %}
     {% endblock %}
+
 </div>
 
 </body>
