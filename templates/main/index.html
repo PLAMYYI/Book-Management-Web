@@ -1,24 +1,39 @@
 {% extends "base.html" %}
+
 {% block content %}
+<h1>Book List</h1>
 
-<h2 class="mb-4">📖 หนังสือทั้งหมด</h2>
+<a href="{{ url_for('add_book') }}">
+    <button>Add Book</button>
+</a>
 
-<div class="row">
-  {% for book in books %}
-  <div class="col-md-4 mb-4">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">{{ book.title }}</h5>
-        <p class="card-text text-muted">
-          {{ book.description[:100] }}...
-        </p>
-        <a href="/books/{{ book.id }}" class="btn btn-primary btn-sm">
-          ดูรายละเอียด
-        </a>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
-</div>
+<ul>
+    {% for book in books %}
+        <li>
+            {{ book.title }} - {{ book.author }}
+
+            {% if current_user.has_roles(["admin"]) %}
+                <span style="color: gray;">
+                    (Added by: {{ book.owner.username }})
+                </span>
+            {% endif %}
+
+            <!-- ปุ่ม Edit -->
+            <a href="{{ url_for('edit_book', book_id=book.id) }}">
+                <button>Edit</button>
+            </a>
+
+            <!-- ปุ่ม Delete -->
+            <form action="{{ url_for('delete_book', book_id=book.id) }}" 
+                  method="POST" 
+                  style="display:inline;">
+                <button type="submit" onclick="return confirm('Are you sure?')">
+                    Delete
+                </button>
+            </form>
+
+        </li>
+    {% endfor %}
+</ul>
 
 {% endblock %}

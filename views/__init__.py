@@ -1,8 +1,6 @@
-from .main import main_bp
-from .accounts import accounts_bp
-from .books import books_bp
+from .main import module as main_module
+from .accounts import accounts
 
-def init_app(app):
-    app.register_blueprint(main_bp)
-    app.register_blueprint(accounts_bp)
-    app.register_blueprint(books_bp)
+def register_blueprint(app):
+    app.register_blueprint(main_module)
+    app.register_blueprint(accounts_module)

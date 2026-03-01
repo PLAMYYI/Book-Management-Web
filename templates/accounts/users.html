@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="text-2xl font-bold mb-6 text-indigo-600">👥 User Management</h2>
+
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+    <table class="w-full text-left">
+        <thead class="bg-indigo-600 text-white">
+            <tr>
+                <th class="px-4 py-2">ID</th>
+                <th class="px-4 py-2">Username</th>
+                <th class="px-4 py-2">Email</th>
+                <th class="px-4 py-2">Roles</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in all_users %}
+            <tr class="border-b hover:bg-gray-100">
+                <td class="px-4 py-2">{{ user.id }}</td>
+                <td class="px-4 py-2">{{ user.username }}</td>
+                <td class="px-4 py-2">{{ user.email }}</td>
+                <td class="px-4 py-2">
+                    <span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-sm">
+                        {{ user.roles }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

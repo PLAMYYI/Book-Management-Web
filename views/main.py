@@ -1,9 +1,13 @@
+from ast import main
 from flask import Blueprint, render_template
-from models import Book
+from flask_login import login_required
 
-main_bp = Blueprint("main", __name__)
+main = Blueprint("main", __name__)
 
-@main_bp.route("/")
+@main.route("/")
 def index():
-    books = Book.query.order_by(Book.created_at.desc()).all()
-    return render_template("main/index.html", books=books)
+    return render_template("main/index.html")
+
+@main.route("/add-book", methods=["GET", "POST"])
+def add_book():
+    return render_template("main/add_book.html")
