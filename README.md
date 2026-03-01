@@ -9,10 +9,10 @@ Features
 - Admin เห็นหนังสือทั้งหมด และเห็นว่าใครเป็นผู้เพิ่ม
 
 วิธีรันโปรเจค
-        pip install flask flask-sqlalchemy flask-login
-        python app.py
+- pip install flask flask-sqlalchemy flask-login
+- python app.py
 
 Role System
-    - ผู้ใช้ทั่วไป (user) จะเห็นเฉพาะหนังสือของตนเอง
-    - ผู้ดูแลระบบ (admin) จะเห็นหนังสือทั้งหมด
-    - Admin จะเห็นชื่อผู้เพิ่มหนังสือกำกับไว้
+- ผู้ใช้ทั่วไป (user) จะเห็นเฉพาะหนังสือของตนเอง
+- ผู้ดูแลระบบ (admin) จะเห็นหนังสือทั้งหมด
+- Admin จะเห็นชื่อผู้เพิ่มหนังสือกำกับไว้
