@@ -1,29 +1,49 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from models import Book
-from extensions import db
-from forms import BookForm
+from models import db, Book
+from acl import role_required
 
-books_bp = Blueprint("books", __name__, url_prefix="/books")
+module = Blueprint("books", __name__, url_prefix="/books")
 
-@books_bp.route("/create", methods=["GET", "POST"])
+
+# ================= LIST BOOKS =================
+@module.route("/")
 @login_required
-def create():
-    form = BookForm()
-    if form.validate_on_submit():
-        book = Book(
-            title=form.title.data,
-            description=form.description.data,
-            author=current_user
+def list_books():
+
+    # 👑 Admin เห็นทุกเล่ม
+    if current_user.has_roles(["admin"]):
+        books = Book.query.all()
+    else:
+        # 👤 User เห็นเฉพาะของตัวเอง
+        books = Book.query.filter_by(user_id=current_user.id).all()
+
+    return render_template("books/list.html", books=books)
+
+
+# ================= ADD BOOK =================
+@module.route("/add-book", methods=["GET", "POST"])
+@login_required
+def add_book():
+    if request.method == "POST":
+        title = request.form.get("title")
+        author = request.form.get("author")
+
+        # ป้องกันกรอกว่าง
+        if not title or not author:
+            flash("Please fill in all fields.")
+            return redirect(url_for("books.add_book"))
+
+        new_book = Book(
+            title=title,
+            author=author,
+            user_id=current_user.id
         )
-        db.session.add(book)
+
+        db.session.add(new_book)
         db.session.commit()
-        flash("เพิ่มหนังสือสำเร็จ")
-        return redirect(url_for("main.index"))
-    return render_template("books/create.html", form=form)
 
+        flash("Book added successfully!")
+        return redirect(url_for("books.list_books"))
 
-@books_bp.route("/<int:id>")
-def detail(id):
-    book = Book.query.get_or_404(id)
-    return render_template("books/detail.html", book=book)
+    return render_template("main/add_book.html")
